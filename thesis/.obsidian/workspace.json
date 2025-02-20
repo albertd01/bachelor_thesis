@@ -1,0 +1,173 @@
+{
+  "main": {
+    "id": "ce2c6573155f4302",
+    "type": "split",
+    "children": [
+      {
+        "id": "8c0d4acfac04ec5e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "05a968a1a29a2f00",
+            "type": "leaf",
+            "state": {
+              "type": "pdf",
+              "state": {
+                "file": "literature/Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015.pdf"
+              },
+              "icon": "lucide-file-text",
+              "title": "Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "befb1b3e42c829f8",
+    "type": "split",
+    "children": [
+      {
+        "id": "a81d511c59c8f95c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b75136b1efa163d3",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "642ddfb6dd0cf198",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "1ab420abb673968f",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "c754d966178c792d",
+    "type": "split",
+    "children": [
+      {
+        "id": "ec6bdef09492fcec",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bff095f655fc7cfd",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "literature/Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015.pdf",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015"
+            }
+          },
+          {
+            "id": "2153d66281f74675",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "literature/Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015.pdf",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015"
+            }
+          },
+          {
+            "id": "9c7f096495ef200f",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "f91867d8e8446040",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "literature/Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015.pdf"
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "05a968a1a29a2f00",
+  "lastOpenFiles": [
+    "literature/A beginner's guide for understanding Extended-Connectivity Fingerprints(ECFPs) · ChemicBook.pdf",
+    "literature/Strategies for Pre-training Graph Neural Networks - Hu et al. - 2020.pdf",
+    "literature/Strategies for Pre-training Graph Neural Networks - Hu et al. - 2020.pdf.opdownload",
+    "literature/Extended-Connectivity Fingerprints - Rogers and Hahn - 2010.pdf",
+    "Welcome.md",
+    "literature/Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015.pdf",
+    "literature"
+  ]
+}
