@@ -2,7 +2,7 @@
     When duplicates occur, multiple nodes or iterations may contribute redundant information to the final fingerprint. This can potentially reduce the discriminative power of the fingerprint if not handled properly.
     
 - **Non-Differentiable Operations:**  
-    A straightforward way to deal with duplicates might be to use a unique filtering or hard thresholding operation. However, these operations are inherently non-differentiable, which would break the backpropag|
+    A straightforward way to deal with duplicates might be to use a unique filtering or hard thresholding operation. However, these operations are inherently non-differentiable, which would break the backpropagation process essential for training the network.
 - **Gradient Flow Issues:**  
     Any operation that “collapses” similar outputs into a single representation in a non-smooth way can impede the learning process. Since every layer must be differentiable for the network to update its weights via gradient descent, you must design a method to handle duplicates that preserves smooth gradients.
     

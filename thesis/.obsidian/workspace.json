@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "notes/Architecture.md",
+                "file": "notes/The Challenge of Duplicates.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Architecture"
+              "title": "The Challenge of Duplicates"
             }
           }
         ]
@@ -165,7 +165,10 @@
   },
   "active": "05a968a1a29a2f00",
   "lastOpenFiles": [
+    "notes/Softmax Pooling.md",
+    "notes/Exposé.md",
     "notes/Attention based pooling.md",
+    "notes/Architecture.md",
     "notes/The Challenge of Duplicates.md",
     "literature/Representation Learning on Graphs with Jumping Knowledge Networks.pdf",
     "literature/Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015.pdf",
@@ -174,9 +177,6 @@
     "literature/How powerful are Graph Neural Networks",
     "literature/How powerful are Graph Neural Networks.opdownload",
     "literature/Representation Learning on Graphs with Jumping Knowledge Networks.pdf.opdownload",
-    "notes/Exposé.md",
-    "notes/Softmax Pooling.md",
-    "notes/Architecture.md",
     "notes",
     "literature/A beginner's guide for understanding Extended-Connectivity Fingerprints(ECFPs) · ChemicBook.pdf",
     "literature/Strategies for Pre-training Graph Neural Networks - Hu et al. - 2020.pdf",
