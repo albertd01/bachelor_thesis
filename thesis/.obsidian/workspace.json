@@ -22,6 +22,18 @@
             }
           },
           {
+            "id": "a3fe9f61f89d3b7a",
+            "type": "leaf",
+            "state": {
+              "type": "pdf",
+              "state": {
+                "file": "literature/Graph Isomorphism Newtworks GIN.pdf"
+              },
+              "icon": "lucide-file-text",
+              "title": "Graph Isomorphism Newtworks GIN"
+            }
+          },
+          {
             "id": "c6fae72a50f93958",
             "type": "leaf",
             "state": {
@@ -36,7 +48,47 @@
             }
           },
           {
-            "id": "d6f9a05d19db248b",
+            "id": "8e4e84465f5ec7e9",
+            "type": "leaf",
+            "state": {
+              "type": "pdf",
+              "state": {
+                "file": "literature/Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015.pdf"
+              },
+              "icon": "lucide-file-text",
+              "title": "Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015"
+            }
+          },
+          {
+            "id": "3210d67f09de810e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "notes/Exposé.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Exposé"
+            }
+          },
+          {
+            "id": "0433a4f166dee974",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Exposé draft.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Exposé draft"
+            }
+          },
+          {
+            "id": "6e95c0d028d73421",
             "type": "leaf",
             "state": {
               "type": "pdf",
@@ -46,9 +98,33 @@
               "icon": "lucide-file-text",
               "title": "Representation Learning on Graphs with Jumping Knowledge Networks"
             }
+          },
+          {
+            "id": "2598b516be7b952d",
+            "type": "leaf",
+            "state": {
+              "type": "pdf",
+              "state": {
+                "file": "literature/Graph Isomorphism Newtworks GIN.pdf"
+              },
+              "icon": "lucide-file-text",
+              "title": "Graph Isomorphism Newtworks GIN"
+            }
+          },
+          {
+            "id": "35bb8e93cda8177b",
+            "type": "leaf",
+            "state": {
+              "type": "pdf",
+              "state": {
+                "file": "literature/Extended-Connectivity Fingerprints - Rogers and Hahn - 2010.pdf"
+              },
+              "icon": "lucide-file-text",
+              "title": "Extended-Connectivity Fingerprints - Rogers and Hahn - 2010"
+            }
           }
         ],
-        "currentTab": 2
+        "currentTab": 5
       }
     ],
     "direction": "vertical"
@@ -190,25 +266,25 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "d6f9a05d19db248b",
+  "active": "0433a4f166dee974",
   "lastOpenFiles": [
+    "literature/Extended-Connectivity Fingerprints - Rogers and Hahn - 2010.pdf",
+    "Exposé draft.md",
     "notes/Exposé.md",
+    "Exposé draft.pdf",
+    "Exposé.pdf",
+    "literature/Self-Attention Graph Pooling.pdf",
+    "literature/Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015.pdf",
+    "literature/Representation Learning on Graphs with Jumping Knowledge Networks.pdf",
+    "literature/Graph Isomorphism Newtworks GIN.pdf",
     "notes/KW12.md",
-    "Untitled.md",
-    "notes/Architecture.md",
     "notes/The Challenge of Duplicates.md",
+    "literature/Strategies for Pre-training Graph Neural Networks - Hu et al. - 2020.pdf",
+    "literature/Self-Attention Graph Pooling.pdf.opdownload",
+    "notes/Architecture.md",
     "notes/Softmax Pooling.md",
     "notes/Attention based pooling.md",
-    "literature/Representation Learning on Graphs with Jumping Knowledge Networks.pdf",
-    "literature/Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015.pdf",
-    "literature/Graph Isomorphism Newtworks GIN.pdf",
     "literature/Graph Isomorphism Newtworks GIN.pdf.opdownload",
-    "literature/How powerful are Graph Neural Networks",
-    "literature/How powerful are Graph Neural Networks.opdownload",
-    "literature/Representation Learning on Graphs with Jumping Knowledge Networks.pdf.opdownload",
-    "notes",
-    "literature/A beginner's guide for understanding Extended-Connectivity Fingerprints(ECFPs) · ChemicBook.pdf",
-    "literature/Strategies for Pre-training Graph Neural Networks - Hu et al. - 2020.pdf",
     "Welcome.md"
   ]
 }

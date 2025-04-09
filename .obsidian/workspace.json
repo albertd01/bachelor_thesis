@@ -1,0 +1,193 @@
+{
+  "main": {
+    "id": "0961f3433b5410c4",
+    "type": "split",
+    "children": [
+      {
+        "id": "9c092a8fe1e640a8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0bed4350bfe2f74c",
+            "type": "leaf",
+            "state": {
+              "type": "pdf",
+              "state": {
+                "file": "thesis/literature/Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015.pdf"
+              },
+              "icon": "lucide-file-text",
+              "title": "Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015"
+            }
+          },
+          {
+            "id": "0e061aa01df4b430",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "thesis/Exposé draft.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Exposé draft"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "17ad39733ae2d537",
+    "type": "split",
+    "children": [
+      {
+        "id": "eff18efb7d6a51e9",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ccf4bbe250efdc0f",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "9c1a6d2f5a5da6c9",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "9df4fc5f236ffd9e",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "b90341a65c588c45",
+    "type": "split",
+    "children": [
+      {
+        "id": "d6fb37fa130e04d2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bc85391fbcf98151",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "thesis/Exposé draft.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Exposé draft"
+            }
+          },
+          {
+            "id": "4ea144086b8c3b84",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "thesis/Exposé draft.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Exposé draft"
+            }
+          },
+          {
+            "id": "8f3ce31e553738de",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "8a9844bed36dabd6",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "thesis/Exposé draft.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Exposé draft"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "0e061aa01df4b430",
+  "lastOpenFiles": [
+    "thesis/literature/Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015.pdf",
+    "thesis/Exposé draft.md",
+    "GRL_Book.pdf",
+    "GRL_Book.pdf.opdownload",
+    "thesis/literature/Self-Attention Graph Pooling.pdf",
+    "thesis/literature/A beginner's guide for understanding Extended-Connectivity Fingerprints(ECFPs) · ChemicBook.pdf"
+  ]
+}
