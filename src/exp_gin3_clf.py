@@ -14,7 +14,7 @@ train, test = get_bace_gnn_datasets(root='data/BACE_GNN')
 train_loader = DataLoader(train, batch_size=32, shuffle=True)
 test_loader = DataLoader(test, batch_size=32, shuffle=False)
 
-gin = MultiLayerGIN(in_channels=dataset.num_features, hidden_channels=64, num_layers=2)
+gin = MultiLayerGIN(in_channels=dataset.num_features, hidden_channels=64, num_layers=3)
 for p in gin.parameters(): 
     p.requires_grad = False
 
@@ -63,10 +63,9 @@ with torch.no_grad():
         logits = clf(emb)
         predictions = (torch.sigmoid(logits) > 0.5).float()
         labels = data.y.float()
+        
         all_probs.extend(predictions.numpy().flatten())
         all_labels.extend(labels.numpy().flatten())
-
-
 
 roc_auc = roc_auc_score(np.array(all_labels), np.array(all_probs))
 print(f"2 layer Frozen-GIN → MLPClassifier ROC-AUC = {roc_auc:.4f}")
