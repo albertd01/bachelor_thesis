@@ -1,4 +1,15 @@
-from data import get_bace_ecfp4_datasets, get_bace_ecfp6_datasets, get_bace_gnn_datasets
+from data import BACE_GNN
+
+# 1) Load the cached one‐hot‐encoded GNN dataset
+dataset = BACE_GNN(root='data/BACE_GNN')
+
+# 2a) Using the Data object’s helper:
+print("Node feature size (num_node_features):", dataset[0].num_node_features)
+
+# 2b) Or by inspecting the x tensor directly:
+print("x.shape for graph 0:", dataset[0].x.shape)
+print("→ number of features per node:", dataset[0].x.shape[1])
+'''from data import get_bace_ecfp4_datasets, get_bace_ecfp6_datasets, get_bace_gnn_datasets
 from torch_geometric.loader import DataLoader
 
 # ECFP4
@@ -19,4 +30,4 @@ loader6_te = DataLoader(test6,  batch_size=32)
 
 print(len(train4) + len(test4))
 print(len(train6) + len(test6))
-print(len(gnn_train) + len(gnn_test))
+print(len(gnn_train) + len(gnn_test))'''
