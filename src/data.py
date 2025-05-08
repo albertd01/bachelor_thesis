@@ -267,3 +267,4 @@ class FingerprintDataset(Dataset):
         # data.x is already your precomputed fingerprint [2048]
         # data.y is [1], so we squeeze it to a scalar
         return data.x, data.y.view(-1)
+    
