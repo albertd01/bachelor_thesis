@@ -6,9 +6,9 @@ from torch.utils.data import random_split
 from torch_geometric.data import InMemoryDataset, Data
 from torch_geometric.datasets import MoleculeNet
 from rdkit import Chem, DataStructs
-from rdkit.Chem import AllChem
 from rdkit.Chem import rdFingerprintGenerator
 import torch.nn.functional as F
+from torch.utils.data import Dataset
 
 # -------------------------------------------------------------------
 # 1) Helper to compute ECFP bit arrays
@@ -250,3 +250,20 @@ def get_bace_gnn_datasets(root, train_ratio=0.8, seed=42):
     g = torch.Generator().manual_seed(seed)
     train_ds, test_ds = random_split(full, [n_train, n_test], generator=g)
     return train_ds, test_ds
+
+class FingerprintDataset(Dataset):
+    """
+    Wraps any InMemoryDataset of Data objects with .x = feature tensor
+    and .y = label tensor into a simple (features, label) tuple dataset.
+    """
+    def __init__(self, inmem_subset):
+        self.subset = inmem_subset
+
+    def __len__(self):
+        return len(self.subset)
+
+    def __getitem__(self, idx):
+        data = self.subset[idx]
+        # data.x is already your precomputed fingerprint [2048]
+        # data.y is [1], so we squeeze it to a scalar
+        return data.x, data.y.view(-1)
