@@ -23,14 +23,12 @@
             "id": "0e061aa01df4b430",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "pdf",
               "state": {
-                "file": "thesis/Exposé draft.md",
-                "mode": "source",
-                "source": false
+                "file": "thesis/literature/Representation Learning on Graphs with Jumping Knowledge Networks.pdf"
               },
-              "icon": "lucide-file",
-              "title": "Exposé draft"
+              "icon": "lucide-file-text",
+              "title": "Representation Learning on Graphs with Jumping Knowledge Networks"
             }
           }
         ],
@@ -107,7 +105,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "thesis/Exposé draft.md",
+                "file": "thesis/literature/Representation Learning on Graphs with Jumping Knowledge Networks.pdf",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -117,7 +115,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Exposé draft"
+              "title": "Backlinks for Representation Learning on Graphs with Jumping Knowledge Networks"
             }
           },
           {
@@ -126,12 +124,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "thesis/Exposé draft.md",
+                "file": "thesis/literature/Representation Learning on Graphs with Jumping Knowledge Networks.pdf",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Exposé draft"
+              "title": "Outgoing links from Representation Learning on Graphs with Jumping Knowledge Networks"
             }
           },
           {
@@ -155,13 +153,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "thesis/Exposé draft.md",
+                "file": "thesis/literature/Representation Learning on Graphs with Jumping Knowledge Networks.pdf",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Exposé draft"
+              "title": "Outline of Representation Learning on Graphs with Jumping Knowledge Networks"
             }
           }
         ]
@@ -183,13 +181,17 @@
   },
   "active": "0e061aa01df4b430",
   "lastOpenFiles": [
+    "thesis/literature/Self-Attention Graph Pooling.pdf",
+    "thesis/literature/Strategies for Pre-training Graph Neural Networks - Hu et al. - 2020.pdf",
+    "thesis/literature/Representation Learning on Graphs with Jumping Knowledge Networks.pdf",
+    "thesis/literature/Graph Isomorphism Newtworks GIN.pdf",
+    "thesis/literature/Extended-Connectivity Fingerprints - Rogers and Hahn - 2010.pdf",
+    "thesis/literature/Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015.pdf",
+    "thesis/literature/A beginner's guide for understanding Extended-Connectivity Fingerprints(ECFPs) · ChemicBook.pdf",
+    "GRL_Book.pdf",
+    "thesis/Exposé draft.md",
     "python-3.11.0-amd64.exe",
     "python-3.11.0-amd64.exe.opdownload",
-    "thesis/literature/Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015.pdf",
-    "thesis/Exposé draft.md",
-    "GRL_Book.pdf",
-    "GRL_Book.pdf.opdownload",
-    "thesis/literature/Self-Attention Graph Pooling.pdf",
-    "thesis/literature/A beginner's guide for understanding Extended-Connectivity Fingerprints(ECFPs) · ChemicBook.pdf"
+    "GRL_Book.pdf.opdownload"
   ]
 }
