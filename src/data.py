@@ -251,6 +251,14 @@ def get_bace_gnn_datasets(root, train_ratio=0.8, seed=42):
     train_ds, test_ds = random_split(full, [n_train, n_test], generator=g)
     return train_ds, test_ds
 
+def get_lipo_gnn_datasets(root, train_ratio=0.8, seed=42):
+    full = LIPO_GNN(root)
+    n_train = int(train_ratio * len(full))
+    n_test  = len(full) - n_train
+    g = torch.Generator().manual_seed(seed)
+    train_ds, test_ds = random_split(full, [n_train, n_test], generator=g)
+    return train_ds, test_ds
+
 class FingerprintDataset(Dataset):
     """
     Wraps any InMemoryDataset of Data objects with .x = feature tensor
