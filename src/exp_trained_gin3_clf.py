@@ -14,7 +14,7 @@ train, test = get_bace_gnn_datasets(root='data/BACE_GNN')
 train_loader = DataLoader(train, batch_size=32, shuffle=True)
 test_loader = DataLoader(test, batch_size=32, shuffle=False)
 
-gin = MultiLayerGIN(in_channels=dataset.num_features, hidden_channels=64, num_layers=2)
+gin = MultiLayerGIN(in_channels=dataset.num_features, hidden_channels=64, num_layers=3)
 for p in gin.parameters(): 
     p.requires_grad = True
 
@@ -36,7 +36,7 @@ clf = MLPClassifier(input_dim=64, hidden_dim=128, output_dim=1)
 optimizer = optim.Adam(list(gin.parameters()) + list(clf.parameters()), lr=0.001) 
 criterion = nn.BCEWithLogitsLoss()
 
-num_epochs = 200
+num_epochs = 300
 clf.train()
 gin.train()
 for epoch in range(num_epochs):
@@ -69,4 +69,4 @@ with torch.no_grad():
 
 
 roc_auc = roc_auc_score(np.array(all_labels), np.array(all_probs))
-print(f"2 layer GIN → MLPClassifier ROC-AUC = {roc_auc:.4f}")
+print(f"3 layer GIN → MLPClassifier ROC-AUC = {roc_auc:.4f}")
