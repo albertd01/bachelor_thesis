@@ -33,18 +33,17 @@ print(f"Unique GNN embeddings:    {unique_embs.size(0)}")
 
 clf = MLPClassifier(input_dim=64, hidden_dim=128, output_dim=1)
 
-optimizer = optim.Adam(list(gin.parameters()) + list(clf.parameters()), lr=0.001)
+optimizer = optim.Adam(list(gin.parameters()) + list(clf.parameters()), lr=0.001) 
 criterion = nn.BCEWithLogitsLoss()
 
-num_epochs = 200
+num_epochs = 350
 clf.train()
-gin.eval()
+gin.train()
 for epoch in range(num_epochs):
     epoch_loss = 0.0
     for data in train_loader:
         optimizer.zero_grad()
-        with torch.no_grad():
-            emb = gin(data)  
+        emb = gin(data)  
         logits = clf(emb)
         labels = data.y.float()
         loss = criterion(logits, labels)
@@ -55,6 +54,7 @@ for epoch in range(num_epochs):
 
 
 clf.eval()
+gin.eval()
 all_labels = []
 all_probs = []
 with torch.no_grad():
@@ -69,4 +69,4 @@ with torch.no_grad():
 
 
 roc_auc = roc_auc_score(np.array(all_labels), np.array(all_probs))
-print(f"2 layer Frozen-GIN → MLPClassifier ROC-AUC = {roc_auc:.4f}")
+print(f"2 layer GIN → MLPClassifier ROC-AUC = {roc_auc:.4f}")
