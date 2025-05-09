@@ -24,7 +24,7 @@ ngf = NeuralFingerprint(
 reg = MLPRegressor(input_dim=128, hidden_dim=128)
 
 for p in ngf.parameters():
-    p.requires_grad = False
+    p.requires_grad = True
     
 loader = DataLoader(dataset, batch_size=64, shuffle=False)
 
@@ -40,17 +40,16 @@ print(f"Unique GNN embeddings:    {unique_embs.size(0)}")
 
 
 
-optimizer = optim.Adam(reg.parameters(), lr=1e-3)
+optimizer = optim.Adam(list(ngf.parameters()) + list(reg.parameters()), lr=1e-3)
 criterion = nn.MSELoss()
 
 # 3) Training loop
 for epoch in range(1, 201):
-    ngf.eval(); reg.train()
+    ngf.train(); reg.train()
     total_loss = 0
     for data in train_loader:
         optimizer.zero_grad()
-        with torch.no_grad():
-            emb = ngf(data.x.float(), data.edge_index, data.batch)
+        emb = ngf(data.x.float(), data.edge_index, data.batch)
         # forward through NGF, then MLP
         pred  = reg(emb).view(-1)
         target= data.y.view(-1)
@@ -72,4 +71,4 @@ with torch.no_grad():
         cnt    += data.num_graphs
 
 rmse = (sq_err/cnt)**0.5
-print(f"2 layer Frozen-NGF → MLPRegression Test RMSE: {rmse:.4f}")
+print(f"2 layer-NGF → MLPRegression Test RMSE: {rmse:.4f}")

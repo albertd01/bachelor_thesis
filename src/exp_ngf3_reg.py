@@ -44,7 +44,7 @@ optimizer = optim.Adam(reg.parameters(), lr=1e-3)
 criterion = nn.MSELoss()
 
 # 3) Training loop
-for epoch in range(1, 101):
+for epoch in range(1, 201):
     ngf.eval(); reg.train()
     total_loss = 0
     for data in train_loader:
