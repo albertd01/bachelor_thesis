@@ -33,7 +33,7 @@ model     = MLPRegressor(input_dim=2048, hidden_dim=128)
 optimizer = optim.Adam(model.parameters(), lr=1e-3)
 criterion = nn.MSELoss()
 
-for epoch in range(1, 16):
+for epoch in range(1, 15):
     model.train()
     total_loss = 0.0
     for x, y in train_loader:

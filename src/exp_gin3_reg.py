@@ -67,4 +67,4 @@ with torch.no_grad():
         count  += data.num_graphs
 
 rmse = (sq_err / count)**0.5
-print(f"2 layer Frozen-GIN → MLPRegressor RMSE = {rmse:.4f}")
+print(f"3 layer Frozen-GIN → MLPRegressor RMSE = {rmse:.4f}")

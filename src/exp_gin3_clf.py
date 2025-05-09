@@ -68,4 +68,4 @@ with torch.no_grad():
         all_labels.extend(labels.numpy().flatten())
 
 roc_auc = roc_auc_score(np.array(all_labels), np.array(all_probs))
-print(f"2 layer Frozen-GIN → MLPClassifier ROC-AUC = {roc_auc:.4f}")
+print(f"3 layer Frozen-GIN → MLPClassifier ROC-AUC = {roc_auc:.4f}")

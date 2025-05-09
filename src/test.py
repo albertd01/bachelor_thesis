@@ -1,33 +1,48 @@
+import torch
+import matplotlib.pyplot as plt
+from torch_geometric.loader import DataLoader
+from torch_geometric.nn.models import NeuralFingerprint
 from data import BACE_GNN
 
-# 1) Load the cached one‐hot‐encoded GNN dataset
+# 1) Load the cached one-hot GNN dataset for BACE
 dataset = BACE_GNN(root='data/BACE_GNN')
+loader = DataLoader(dataset, batch_size=64, shuffle=False)
 
-# 2a) Using the Data object’s helper:
-print("Node feature size (num_node_features):", dataset[0].num_node_features)
+# 2) Instantiate and freeze the NGF model (same config as your experiments)
+ngf = NeuralFingerprint(
+    in_channels=dataset.num_node_features,
+    hidden_channels=64,
+    out_channels=128,
+    num_layers=3
+)
+for param in ngf.parameters():
+    param.requires_grad = False
+ngf.eval()
 
-# 2b) Or by inspecting the x tensor directly:
-print("x.shape for graph 0:", dataset[0].x.shape)
-print("→ number of features per node:", dataset[0].x.shape[1])
-from data import get_bace_ecfp4_datasets, get_bace_ecfp6_datasets, get_bace_gnn_datasets
-from torch_geometric.loader import DataLoader
+# 3) Collect graph-level embeddings
+embeddings = []
+with torch.no_grad():
+    for batch in loader:
+        batch = batch.to('cpu')
+        emb = ngf(batch.x.float(), batch.edge_index, batch.batch)
+        embeddings.append(emb)
+all_emb = torch.cat(embeddings, dim=0)  # [N_graphs, 128]
 
-# ECFP4
-train4, test4 = get_bace_ecfp4_datasets(root='data/BACE_ECFP')
-loader4_tr = DataLoader(train4, batch_size=32, shuffle=True)
-loader4_te = DataLoader(test4,  batch_size=32)
+# 4a) Plot distribution of all fingerprint values
+vals = all_emb.flatten().cpu().numpy()
+plt.figure()
+plt.hist(vals, bins=50)
+plt.title("Frozen NGF Fingerprint Value Distribution")
+plt.xlabel("Fingerprint Component Value")
+plt.ylabel("Frequency")
+plt.show()
 
-#GNN
-gnn_train, gnn_test = get_bace_gnn_datasets( 'data/BACE_GNN')
-loader_gnn_tr = DataLoader(gnn_train, batch_size=32, shuffle=True)
-loader_gnn_te = DataLoader(gnn_test, batch_size=32, shuffle=True)
+# 4b) Plot distribution of L2 norms of each fingerprint
+plt.figure()
+norms = torch.norm(all_emb, dim=1).numpy()
+plt.hist(norms, bins=50)
+plt.title("L2 Norm Distribution of Frozen NGF Embeddings")
+plt.xlabel("L2 Norm")
+plt.ylabel("Frequency")
+plt.show()
 
-# ECFP6
-train6, test6 = get_bace_ecfp6_datasets(root='data/BACE_ECFP')
-loader6_tr = DataLoader(train6, batch_size=32, shuffle=True)
-loader6_te = DataLoader(test6,  batch_size=32)
-
-
-print(len(train4) + len(test4))
-print(len(train6) + len(test6))
-print(len(gnn_train) + len(gnn_test))
