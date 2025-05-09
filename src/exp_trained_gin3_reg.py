@@ -15,7 +15,7 @@ train, test = get_lipo_gnn_datasets(root='data/LIPO_GNN')
 train_loader = DataLoader(train, batch_size=32, shuffle=True)
 test_loader = DataLoader(test, batch_size=32, shuffle=False)
 
-gin = MultiLayerGIN(in_channels=dataset.num_features, hidden_channels=64, num_layers=2)
+gin = MultiLayerGIN(in_channels=dataset.num_features, hidden_channels=64, num_layers=3)
 for p in gin.parameters(): 
     p.requires_grad = True
 
@@ -68,4 +68,4 @@ with torch.no_grad():
         count  += data.num_graphs
 
 rmse = (sq_err / count)**0.5
-print(f"2 layer GIN → MLPRegressor RMSE = {rmse:.4f}")
+print(f"3 layer GIN → MLPRegressor RMSE = {rmse:.4f}")
