@@ -18,7 +18,7 @@ ngf = NeuralFingerprint(
     in_channels     = dataset.num_features,  
     hidden_channels = 128,
     out_channels    = 128,
-    num_layers      = 2
+    num_layers      = 3
 )
     
 reg = MLPRegressor(input_dim=128, hidden_dim=128)
@@ -72,4 +72,4 @@ with torch.no_grad():
         cnt    += data.num_graphs
 
 rmse = (sq_err/cnt)**0.5
-print(f"2 layer Frozen-NGF → MLPRegression Test RMSE: {rmse:.4f}")
+print(f"3 layer Frozen-NGF → MLPRegression Test RMSE: {rmse:.4f}")
