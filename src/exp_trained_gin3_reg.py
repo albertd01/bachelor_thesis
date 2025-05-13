@@ -36,17 +36,15 @@ reg = MLPRegressor(input_dim=64, hidden_dim=128)
 optimizer = optim.Adam(list(gin.parameters())+ list(reg.parameters()), lr=0.001)
 criterion = nn.MSELoss()
     
-# 6) Training loop
 for epoch in range(1, 201):
     reg.train()
     gin.train()
     total_loss = 0
     for data in train_loader:
         optimizer.zero_grad()
-        #with torch.no_grad():
-        emb = gin(data)             # shape [batch_size]
+        emb = gin(data)             
         logits = reg(emb)
-        targets = data.y.view(-1)       # shape [batch_size]
+        targets = data.y.view(-1)      
         loss = criterion(logits, targets)
         loss.backward()
         optimizer.step()
@@ -54,7 +52,6 @@ for epoch in range(1, 201):
     total_loss /= len(train)
     print(f"Epoch {epoch:>2}  Train RMSE: {total_loss**0.5:.4f}")
 
-# 7) Evaluation on test set
 reg.eval()
 gin.eval()
 sq_err = 0.0

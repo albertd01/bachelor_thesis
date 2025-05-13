@@ -21,7 +21,6 @@ print(f"Total molecules:           {all_fps.size(0)}")
 print(f"Unique ECFP4 fingerprints: {unique_fps.size(0)}")
 
 
-# Training the model
 train_inmem, test_inmem = get_bace_ecfp6_datasets(root='data/BACE_ECFP')
 
 train = FingerprintDataset(train_inmem)

@@ -43,7 +43,7 @@ print(f"Unique GNN embeddings:    {unique_embs.size(0)}")
 optimizer = optim.Adam(reg.parameters(), lr=1e-3)
 criterion = nn.MSELoss()
 
-# 3) Training loop
+
 for epoch in range(1, 201):
     ngf.eval(); reg.train()
     total_loss = 0
@@ -51,7 +51,6 @@ for epoch in range(1, 201):
         optimizer.zero_grad()
         with torch.no_grad():
             emb = ngf(data.x.float(), data.edge_index, data.batch)
-        # forward through NGF, then MLP
         pred  = reg(emb).view(-1)
         target= data.y.view(-1)
         loss  = criterion(pred, target)
@@ -60,7 +59,6 @@ for epoch in range(1, 201):
         total_loss += loss.item() * data.num_graphs
     print(f"Epoch {epoch:>2}  Train RMSE: {(total_loss / len(train))**0.5:.4f}")
 
-# 4) Evaluation
 ngf.eval(); reg.eval()
 sq_err, cnt = 0.0, 0
 with torch.no_grad():

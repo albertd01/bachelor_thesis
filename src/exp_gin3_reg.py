@@ -15,7 +15,7 @@ train, test = get_lipo_gnn_datasets(root='data/LIPO_GNN')
 train_loader = DataLoader(train, batch_size=32, shuffle=True)
 test_loader = DataLoader(test, batch_size=32, shuffle=False)
 
-gin = MultiLayerGIN(in_channels=dataset.num_features, hidden_channels=64, num_layers=3)
+gin = MultiLayerGIN(in_channels=dataset.num_features, hidden_channels=128, num_layers=3)
 for p in gin.parameters(): 
     p.requires_grad = False
 
@@ -31,12 +31,11 @@ unique_embs = torch.unique(all_embs, dim=0)
 print(f"Total graphs:             {all_embs.size(0)}")
 print(f"Unique GNN embeddings:    {unique_embs.size(0)}")
 
-reg = MLPRegressor(input_dim=64, hidden_dim=128)
+reg = MLPRegressor(input_dim=128, hidden_dim=128)
 
 optimizer = optim.Adam(reg.parameters(), lr=0.001)
 criterion = nn.MSELoss()
     
-# 6) Training loop
 for epoch in range(1, 201):
     reg.train()
     gin.eval()
@@ -44,9 +43,9 @@ for epoch in range(1, 201):
     for data in train_loader:
         optimizer.zero_grad()
         with torch.no_grad():
-            emb = gin(data)             # shape [batch_size]
+            emb = gin(data)             
         logits = reg(emb)
-        targets = data.y.view(-1)       # shape [batch_size]
+        targets = data.y.view(-1)       
         loss = criterion(logits, targets)
         loss.backward()
         optimizer.step()
@@ -54,7 +53,7 @@ for epoch in range(1, 201):
     total_loss /= len(train)
     print(f"Epoch {epoch:>2}  Train RMSE: {total_loss**0.5:.4f}")
 
-# 7) Evaluation on test set
+
 reg.eval()
 sq_err = 0.0
 count  = 0

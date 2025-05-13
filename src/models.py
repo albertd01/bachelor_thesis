@@ -11,7 +11,6 @@ class MultiLayerGIN(nn.Module):
         self.convs = nn.ModuleList()
         for layer in range(num_layers):
             dim_in = in_channels if layer == 0 else hidden_channels
-            # each GIN block: MLP(in→hidden→hidden)
             mlp = nn.Sequential(
                 nn.Linear(dim_in, hidden_channels),
                 nn.ReLU(),

@@ -14,7 +14,7 @@ train, test = get_bace_gnn_datasets(root='data/BACE_GNN')
 train_loader = DataLoader(train, batch_size=32, shuffle=True)
 test_loader = DataLoader(test, batch_size=32, shuffle=False)
 
-gin = MultiLayerGIN(in_channels=dataset.num_features, hidden_channels=64, num_layers=3)
+gin = MultiLayerGIN(in_channels=dataset.num_features, hidden_channels=128, num_layers=3)
 for p in gin.parameters(): 
     p.requires_grad = True
 
@@ -31,12 +31,12 @@ print(f"Total graphs:             {all_embs.size(0)}")
 print(f"Unique GNN embeddings:    {unique_embs.size(0)}")
 
 
-clf = MLPClassifier(input_dim=64, hidden_dim=128, output_dim=1)
+clf = MLPClassifier(input_dim=128, hidden_dim=128, output_dim=1)
 
 optimizer = optim.Adam(list(gin.parameters()) + list(clf.parameters()), lr=0.001) 
 criterion = nn.BCEWithLogitsLoss()
 
-num_epochs = 300
+num_epochs = 200
 clf.train()
 gin.train()
 for epoch in range(num_epochs):

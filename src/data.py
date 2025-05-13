@@ -57,11 +57,10 @@ class BACE_ECFP(InMemoryDataset):
 
     @property
     def raw_file_names(self):
-        return []   # pull raw data via MoleculeNet
+        return []   
 
     @property
     def processed_file_names(self):
-        # distinct file for each radius
         return [f'ecfp_r{self.radius}_b{self.nBits}.pt']
 
     def download(self):
@@ -72,8 +71,8 @@ class BACE_ECFP(InMemoryDataset):
         data_list = []
         for data in molnet:
             arr = compute_ecfp_array(data.smiles, self.radius, self.nBits)
-            x   = torch.from_numpy(arr).float()           # [nBits]
-            y   = data.y.clone().view(-1).float()         # [1]
+            x   = torch.from_numpy(arr).float()           
+            y   = data.y.clone().view(-1).float()         
             data_list.append(Data(x=x, y=y))
         data, slices = self.collate(data_list)
         torch.save((data, slices), self.processed_paths[0])
@@ -87,11 +86,10 @@ class LIPO_ECFP(InMemoryDataset):
 
     @property
     def raw_file_names(self):
-        return []   # pull raw data via MoleculeNet
+        return []   
 
     @property
     def processed_file_names(self):
-        # distinct file for each radius
         return [f'ecfp_r{self.radius}_b{self.nBits}.pt']
 
     def download(self):
@@ -102,8 +100,8 @@ class LIPO_ECFP(InMemoryDataset):
         data_list = []
         for data in molnet:
             arr = compute_ecfp_array(data.smiles, self.radius, self.nBits)
-            x   = torch.from_numpy(arr).float()           # [nBits]
-            y   = data.y.clone().view(-1).float()         # [1]
+            x   = torch.from_numpy(arr).float()           
+            y   = data.y.clone().view(-1).float()         
             data_list.append(Data(x=x, y=y))
         data, slices = self.collate(data_list)
         torch.save((data, slices), self.processed_paths[0])
@@ -229,17 +227,13 @@ class BACE_GNN(InMemoryDataset):
         pass
 
     def process(self):
-        # 1) load raw PyG BACE graphs
         raw = MoleculeNet(self.root, name='bace')
-        # 2) compute global max per feature column
         feature_indices = {0: 54, 1:3, 2:5, 3:7, 4:4, 6:5} 
         onehot = OneHotEncodeFeatures(feature_indices)
-        # 4) apply and collect
         data_list = []
         for data in raw:
             d2 = onehot(data)
             data_list.append(d2)
-        # 5) collate & save
         data, slices = self.collate(data_list)
         torch.save((data, slices), self.processed_paths[0])
 
@@ -272,7 +266,5 @@ class FingerprintDataset(Dataset):
 
     def __getitem__(self, idx):
         data = self.subset[idx]
-        # data.x is already your precomputed fingerprint [2048]
-        # data.y is [1], so we squeeze it to a scalar
         return data.x, data.y.view(-1)
     

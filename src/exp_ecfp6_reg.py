@@ -20,7 +20,6 @@ unique_fps = torch.unique(all_fps, dim=0)
 print(f"Total molecules:           {all_fps.size(0)}")
 print(f"Unique ECFP6 fingerprints: {unique_fps.size(0)}")
 
-# Training the model
 train_inmem, test_inmem = get_lipo_ecfp4_datasets(root='data/LIPO_ECFP')
 
 train = FingerprintDataset(train_inmem)

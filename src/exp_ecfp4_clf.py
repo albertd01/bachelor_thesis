@@ -61,7 +61,6 @@ with torch.no_grad():
         logits       = model(fingerprints).view(-1)
         probs        = torch.sigmoid(logits)      
 
-        # accumulate for AUC
         all_probs .extend(probs.cpu().numpy())
         all_labels.extend(labels.cpu().numpy())
 
