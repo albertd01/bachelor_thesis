@@ -30,9 +30,21 @@
               "icon": "lucide-file-text",
               "title": "Representation Learning on Graphs with Jumping Knowledge Networks"
             }
+          },
+          {
+            "id": "ab0af53f03330336",
+            "type": "leaf",
+            "state": {
+              "type": "pdf",
+              "state": {
+                "file": "thesis/literature/Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015.pdf"
+              },
+              "icon": "lucide-file-text",
+              "title": "Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015"
+            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -179,19 +191,20 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "0e061aa01df4b430",
+  "active": "ab0af53f03330336",
   "lastOpenFiles": [
+    "thesis/Milestone 2.pdf",
+    "thesis/Exposé - Milestone1.pdf",
+    "thesis/Exposé (1).pdf",
+    "thesis/Milestone2.pdf",
+    "thesis/notes/Exposé draft.md",
+    "thesis/notes/Exposé.pdf",
+    "thesis/notes/Exposé draft.pdf",
+    "thesis/literature/Representation Learning on Graphs with Jumping Knowledge Networks.pdf",
     "thesis/literature/Self-Attention Graph Pooling.pdf",
     "thesis/literature/Strategies for Pre-training Graph Neural Networks - Hu et al. - 2020.pdf",
-    "thesis/literature/Representation Learning on Graphs with Jumping Knowledge Networks.pdf",
     "thesis/literature/Graph Isomorphism Newtworks GIN.pdf",
     "thesis/literature/Extended-Connectivity Fingerprints - Rogers and Hahn - 2010.pdf",
-    "thesis/literature/Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015.pdf",
-    "thesis/literature/A beginner's guide for understanding Extended-Connectivity Fingerprints(ECFPs) · ChemicBook.pdf",
-    "GRL_Book.pdf",
-    "thesis/Exposé draft.md",
-    "python-3.11.0-amd64.exe",
-    "python-3.11.0-amd64.exe.opdownload",
-    "GRL_Book.pdf.opdownload"
+    "thesis/Exposé draft.md"
   ]
 }
