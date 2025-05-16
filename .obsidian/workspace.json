@@ -37,10 +37,10 @@
             "state": {
               "type": "pdf",
               "state": {
-                "file": "thesis/literature/Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015.pdf"
+                "file": "thesis/literature/Graph Isomorphism Newtworks GIN.pdf"
               },
               "icon": "lucide-file-text",
-              "title": "Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015"
+              "title": "Graph Isomorphism Newtworks GIN"
             }
           }
         ],
@@ -193,18 +193,18 @@
   },
   "active": "ab0af53f03330336",
   "lastOpenFiles": [
-    "thesis/Milestone 2.pdf",
-    "thesis/Exposé - Milestone1.pdf",
-    "thesis/Exposé (1).pdf",
-    "thesis/Milestone2.pdf",
+    "src/ngf_embedding_analysis",
+    "src/experiments/conclusions.ipynb",
+    "src/experiments/plot.py",
+    "src/experiments/models.py",
+    "src/experiments/exp_trained_ngf3_reg.py",
+    "src/experiments/exp_trained_ngf3_clf.py",
+    "src/experiments/exp_trained_ngf2_reg.py",
+    "src/experiments/exp_trained_ngf2_clf.py",
+    "src/experiments/exp_trained_gin3_reg.py",
+    "src/experiments/exp_trained_gin3_clf.py",
+    "src/experiments/exp_trained_gin2_reg.py",
     "thesis/notes/Exposé draft.md",
-    "thesis/notes/Exposé.pdf",
-    "thesis/notes/Exposé draft.pdf",
-    "thesis/literature/Representation Learning on Graphs with Jumping Knowledge Networks.pdf",
-    "thesis/literature/Self-Attention Graph Pooling.pdf",
-    "thesis/literature/Strategies for Pre-training Graph Neural Networks - Hu et al. - 2020.pdf",
-    "thesis/literature/Graph Isomorphism Newtworks GIN.pdf",
-    "thesis/literature/Extended-Connectivity Fingerprints - Rogers and Hahn - 2010.pdf",
     "thesis/Exposé draft.md"
   ]
 }
