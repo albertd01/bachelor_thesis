@@ -6,16 +6,21 @@ import numpy as np
 from rdkit import Chem, DataStructs
 from rdkit.Chem import rdFingerprintGenerator
 
+'''Although Algorithm 1 in Duvenaud et al. is described as a simplified analog of ECFP, 
+we find that its practical output differs significantly from RDKit’s canonical ECFP. 
+Using aligned atom features and hashing, 
+our implementation of Algorithm 1 yielded near-zero Tanimoto similarity to RDKit ECFP across the ESOL dataset. 
+This suggests that claims about similarity in the NGF paper may rely on using RDKit's implementation, 
+not Algorithm 1 as described.'''
+
 def hash_atom_info(atom):
     features = (
         atom.GetAtomicNum(),
         atom.GetTotalDegree(),
-        atom.GetFormalCharge(),
         atom.GetTotalNumHs(),
-        atom.GetNumRadicalElectrons(),
-        str(atom.GetHybridization()),
+        atom.GetImplicitValence(),
         atom.GetIsAromatic(),
-        atom.IsInRing()
+        #atom.IsInRing()
     )
     s = str(features)
     h = hashlib.sha1(s.encode('utf-8')).hexdigest()
@@ -27,7 +32,7 @@ def hash_tuple(t):
 
 
 # From scratch implemenetation
-def generate_ecfp(mol, radius=2, nBits=2048):
+def algorithm1_duvenaud(mol, radius=2, nBits=2048):
     fp_bits = set()
     atom_ids = {}
     
@@ -43,6 +48,7 @@ def generate_ecfp(mol, radius=2, nBits=2048):
                 atom_ids[neighbor.GetIdx()]
                 for neighbor in atom.GetNeighbors()
             )
+            #info = (iteration,) + info
             env_id = hash_tuple(info)
             fp_bits.add(env_id % nBits)
             new_ids[idx] = env_id
@@ -70,28 +76,41 @@ def compute_ecfp_array(smiles: str, radius: int, nBits: int) -> np.ndarray:
     invariants = get_custom_invariants(mol)  
     
     mfpgen = rdFingerprintGenerator.GetMorganGenerator(radius=radius, fpSize=nBits)
-    fp = mfpgen.GetFingerprint(mol, customAtomInvariants=invariants)
-    info = {}
-    print("RDKit bitInfo:")
-    for bit, entries in info.items():
-        print(f"Bit {bit}: {entries}")
+    fp = mfpgen.GetFingerprint(mol)
 
     arr = np.zeros((nBits,), dtype=int)
     DataStructs.ConvertToNumpyArray(fp, arr)
     return arr
+
+def compute_ecfp_fp(smiles: str, radius: int, nBits: int):
+    mol = Chem.MolFromSmiles(smiles)
+    if mol is None:
+        raise ValueError("Invalid SMILES string")
+
+    invariants = get_custom_invariants(mol) #doesnt seem to make a difference with this feature subset
+    mfpgen = rdFingerprintGenerator.GetMorganGenerator(radius=radius, fpSize=nBits)
+    return mfpgen.GetFingerprint(mol)
+
+def compute_tanimoto(fp1, fp2):
+    intersection = np.sum(np.logical_and(fp1, fp2))
+    union = np.sum(np.logical_or(fp1, fp2))
+    return intersection / union
 
 
 from rdkit.Chem import MolFromSmiles
 
 smiles = 'CCO' 
 mol = MolFromSmiles(smiles)
-fingerprint_from_scratch = generate_ecfp(mol, radius=2, nBits=1024)
+fingerprint_from_scratch = algorithm1_duvenaud(mol, radius=2, nBits=1024)
 fingerprint_rdkit = compute_ecfp_array(smiles, radius=2, nBits=1024)
+fingerprint_paper_repo = AllChem.GetMorganFingerprintAsBitVect(mol, radius=2, nBits=1024)
+arr = np.zeros((1024,), dtype=int)
+DataStructs.ConvertToNumpyArray(fingerprint_paper_repo, arr)
 
 print("From scratch bits:", np.where(fingerprint_from_scratch == 1)[0])
 print("RDKit bits:", np.where(fingerprint_rdkit == 1)[0])
+print("Paper repo bits:", np.where(arr == 1)[0])
 
-intersection = np.sum(np.logical_and(fingerprint_from_scratch, fingerprint_rdkit))
-union = np.sum(np.logical_or(fingerprint_from_scratch, fingerprint_rdkit))
-tanimoto_similarity = intersection / union
-print(f"Tanimoto similarity: {tanimoto_similarity:.4f}")
+print(f"Tanimoto similarity between implementation of Algorithm1 and rdkit (same atom features): {compute_tanimoto(fingerprint_from_scratch, fingerprint_rdkit):.4f}")
+print(f"Tanimoto similarity between implementation of Algorithm1 and paper github: {compute_tanimoto(fingerprint_from_scratch, arr):.4f}")
+print(f"Tanimoto similarity between implementation of rdkit and paper github: {compute_tanimoto(fingerprint_rdkit, arr):.4f}")

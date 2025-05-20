@@ -105,6 +105,35 @@ class LIPO_ECFP(InMemoryDataset):
             data_list.append(Data(x=x, y=y))
         data, slices = self.collate(data_list)
         torch.save((data, slices), self.processed_paths[0])
+        
+class ESOL_ECFP(InMemoryDataset):
+    def __init__(self, root: str, radius: int, nBits: int = 2048):
+        self.radius = radius
+        self.nBits   = nBits
+        super().__init__(root)
+        self.data, self.slices = torch.load(self.processed_paths[0], weights_only=False)
+
+    @property
+    def raw_file_names(self):
+        return []   
+
+    @property
+    def processed_file_names(self):
+        return [f'ecfp_r{self.radius}_b{self.nBits}.pt']
+
+    def download(self):
+        pass
+
+    def process(self):
+        molnet = MoleculeNet(self.root, name='lipo')
+        data_list = []
+        for data in molnet:
+            arr = compute_ecfp_array(data.smiles, self.radius, self.nBits)
+            x   = torch.from_numpy(arr).float()           
+            y   = data.y.clone().view(-1).float()         
+            data_list.append(Data(x=x, y=y))
+        data, slices = self.collate(data_list)
+        torch.save((data, slices), self.processed_paths[0])
 
 # -------------------------------------------------------------------
 # 3) Helper to split BACE_ECFP into train/test
@@ -124,6 +153,21 @@ def _split_ecfp_lipo(root: str, radius: int, nBits: int,
     n_test  = len(full) - n_train
     g = torch.Generator().manual_seed(seed)
     return random_split(full, [n_train, n_test], generator=g)
+
+def _split_ecfp_esol(root: str, radius: int, nBits: int,
+                     train_ratio: float, seed: int):
+    full = ESOL_ECFP(root, radius=radius, nBits=nBits)
+    n_train = int(train_ratio * len(full))
+    n_test  = len(full) - n_train
+    g = torch.Generator().manual_seed(seed)
+    return random_split(full, [n_train, n_test], generator=g)
+
+def get_esol_ecfp4_datasets(root: str,
+                            nBits: float = 2048,
+                            train_ratio: float = 0.8,
+                            seed: int = 42):
+    return _split_ecfp_esol(root, radius=2, nBits=nBits,
+                            train_ratio=train_ratio, seed=seed)
 
 def get_lipo_ecfp4_datasets(root: str,
                             nBits: float = 2048,
@@ -209,6 +253,33 @@ class LIPO_GNN(InMemoryDataset):
             data_list.append(d2)
         data, slices = self.collate(data_list)
         torch.save((data, slices), self.processed_paths[0])
+        
+class ESOL_GNN(InMemoryDataset):
+    def __init__(self, root):
+        super().__init__(root)
+        self.data, self.slices = torch.load(self.processed_paths[0], weights_only=False)
+
+    @property
+    def raw_file_names(self):
+        return []
+
+    @property
+    def processed_file_names(self):
+        return ['gnn_onehot.pt']
+
+    def download(self):
+        pass
+
+    def process(self):
+        raw = MoleculeNet(self.root, name='ESOL')
+        feature_indices = {0: 54, 2:5, 3:7, 4:5, 6:5} 
+        onehot = OneHotEncodeFeatures(feature_indices)
+        data_list = []
+        for data in raw:
+            d2 = onehot(data)
+            data_list.append(d2)
+        data, slices = self.collate(data_list)
+        torch.save((data, slices), self.processed_paths[0])
     
 class BACE_GNN(InMemoryDataset):
     def __init__(self, root):
@@ -247,6 +318,14 @@ def get_bace_gnn_datasets(root, train_ratio=0.8, seed=42):
 
 def get_lipo_gnn_datasets(root, train_ratio=0.8, seed=42):
     full = LIPO_GNN(root)
+    n_train = int(train_ratio * len(full))
+    n_test  = len(full) - n_train
+    g = torch.Generator().manual_seed(seed)
+    train_ds, test_ds = random_split(full, [n_train, n_test], generator=g)
+    return train_ds, test_ds
+
+def get_esol_gnn_datasets(root, train_ratio=0.8, seed=42):
+    full = ESOL_GNN(root)
     n_train = int(train_ratio * len(full))
     n_test  = len(full) - n_train
     g = torch.Generator().manual_seed(seed)

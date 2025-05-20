@@ -37,10 +37,10 @@
             "state": {
               "type": "pdf",
               "state": {
-                "file": "thesis/literature/Graph Isomorphism Newtworks GIN.pdf"
+                "file": "thesis/literature/Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015.pdf"
               },
               "icon": "lucide-file-text",
-              "title": "Graph Isomorphism Newtworks GIN"
+              "title": "Convolutional Networks on Graphs for Learning Mole - Duvenaud et al. - 2015"
             }
           }
         ],
@@ -193,17 +193,17 @@
   },
   "active": "ab0af53f03330336",
   "lastOpenFiles": [
-    "src/ngf_embedding_analysis/__pycache__/alg1_ecfp.cpython-313.pyc",
-    "src/ngf_embedding_analysis/__pycache__",
-    "src/ngf_embedding_analysis/data/MoleculeNet/esol/processed/pre_filter.pt",
-    "src/ngf_embedding_analysis/data/MoleculeNet/esol/processed/pre_transform.pt",
-    "src/ngf_embedding_analysis/data/MoleculeNet/esol/processed/data.pt",
-    "src/ngf_embedding_analysis/data/MoleculeNet/esol/processed",
-    "src/ngf_embedding_analysis/data/MoleculeNet/esol/raw/delaney-processed.csv",
-    "src/ngf_embedding_analysis/data/MoleculeNet/esol/raw",
-    "src/ngf_embedding_analysis/data/MoleculeNet/esol",
-    "src/ngf_embedding_analysis/data/MoleculeNet",
-    "src/ngf_embedding_analysis/data",
+    "src/ngf_embedding_analysis/__pycache__/features.cpython-313.pyc",
+    "src/ngf_embedding_analysis/features.py",
+    "src/ngf_embedding_analysis/__pycache__/recreate_fig3.cpython-313.pyc",
+    "src/ngf_embedding_analysis/recreate_fig3.py",
+    "src/ngf_embedding_analysis/data/ESOL_ECFP/processed/pre_filter.pt",
+    "src/ngf_embedding_analysis/data/ESOL_ECFP/processed/pre_transform.pt",
+    "src/ngf_embedding_analysis/data/ESOL_ECFP/processed/ecfp_r2_b2048.pt",
+    "src/ngf_embedding_analysis/data/ESOL_ECFP/lipo/processed/pre_filter.pt",
+    "src/ngf_embedding_analysis/data/ESOL_ECFP/lipo/processed/pre_transform.pt",
+    "src/ngf_embedding_analysis/data/ESOL_ECFP/lipo/processed/data.pt",
+    "src/ngf_embedding_analysis/data/ESOL_ECFP/lipo/processed",
     "thesis/notes/Exposé draft.md",
     "thesis/Exposé draft.md"
   ]
