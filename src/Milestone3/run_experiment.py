@@ -8,6 +8,7 @@ from utils.evaluation import run_pairwise_analysis, plot_pairwise_distances
 from utils.downstream import run_downstream_task
 import numpy as np
 from torch_geometric.loader import DataLoader
+from utils.logging_utils import create_experiment_dir, save_results, save_distances_csv, save_distance_plot
 
 def load_config(config_path):
     with open(config_path, 'r') as f:
@@ -84,6 +85,24 @@ def run_experiment(config):
     print(f"\n[Downstream Evaluation] {task_type} on {dataset_name} dataset")
     print(f"ECFP   → mean: {results['ecfp'][0]:.4f}, std: {results['ecfp'][1]:.4f}")
     print(f"NGF    → mean: {results['ngf'][0]:.4f}, std: {results['ngf'][1]:.4f}")
+    
+    # Save results 
+    log_dir = create_experiment_dir(config['experiment']['dataset'])
+    save_distance_plot(log_dir, ecfp_dists, ngf_dists, r, title=config['experiment']['dataset'])
+    save_distances_csv(log_dir, ecfp_dists, ngf_dists)
+    results_to_log = {
+        "dataset": config['experiment']['dataset'],
+        "pearson_r": r,
+        "downstream": {
+            "task": config['experiment']['evaluation']['downstream_task'],
+            "ecfp_mean": float(results['ecfp'][0]),
+            "ecfp_std": float(results['ecfp'][1]),
+            "ngf_mean": float(results['ngf'][0]),
+            "ngf_std": float(results['ngf'][1])
+        },
+        "config": config['experiment']  
+    }
+    save_results(log_dir, results_to_log)
 
 if __name__ == "__main__":
     config_path = Path("config/experiment.yaml")

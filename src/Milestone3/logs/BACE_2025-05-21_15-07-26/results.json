@@ -1,0 +1,34 @@
+{
+  "dataset": "BACE",
+  "pearson_r": 0.6155358442261658,
+  "downstream": {
+    "task": "classification",
+    "ecfp_mean": 0.8827976332522086,
+    "ecfp_std": 0.01661645042022945,
+    "ngf_mean": 0.8641892353384893,
+    "ngf_std": 0.01674710162901712
+  },
+  "config": {
+    "dataset": "BACE",
+    "ngf": {
+      "hidden_dim": 128,
+      "fingerprint_dim": 2048,
+      "num_layers": 2,
+      "weight_scale": 5.0,
+      "sum_fn": "default",
+      "smooth_fn": "identity",
+      "sparsify_fn": "softmax",
+      "frozen": true
+    },
+    "ECFP": {
+      "radius": 2,
+      "fingerprint_dim": 2048,
+      "count_fingerprint": false
+    },
+    "evaluation": {
+      "num_pairs": 2000,
+      "downstream_task": "classification",
+      "model": "mlp"
+    }
+  }
+}

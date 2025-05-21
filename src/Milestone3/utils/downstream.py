@@ -1,6 +1,3 @@
-from sklearn.linear_model import Ridge, LogisticRegression
-from sklearn.model_selection import cross_val_score
-from sklearn.metrics import make_scorer, r2_score, accuracy_score
 import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
@@ -93,5 +90,5 @@ def train_model(model, X_train, y_train, X_test, y_test, task_type, epochs=100, 
             score = roc_auc_score(y_test.numpy(), preds)
         else:
             preds = preds.numpy()
-            score = root_mean_squared_error(y_test.numpy(), preds)  # RMSE
+            score = root_mean_squared_error(y_test.numpy(), preds) 
     return score
