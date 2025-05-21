@@ -1,0 +1,22 @@
+experiment:
+  dataset: BACE  # Options: ESOL, BACE, lipo
+
+  ngf:
+    hidden_dim: 128
+    fingerprint_dim: 2048
+    num_layers: 2
+    weight_scale: 5.0           # Choose float
+    sum_fn: default              # Options: default, bond_weighted
+    smooth_fn: tanh              # Options: tanh, relu, identity
+    sparsify_fn: softmax         # Options: softmax, gumbel
+    frozen: true                 # If true, NGF weights are not trained
+
+  ECFP:
+    radius: 2
+    fingerprint_dim: 2048
+    count_fingerprint: false     # Use binary (False) or count-based (True) ECFP
+
+  evaluation:
+    num_pairs: 2000              # Number of random (i, j) pairs for distance comparison
+    downstream_task: classification  # Options: regression, classification
+    model: mlp                 
