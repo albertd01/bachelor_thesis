@@ -1,5 +1,5 @@
 experiment:
-  dataset: lipo  # Options: ESOL, BACE, lipo
+  dataset: ESOL  # Options: ESOL, BACE, lipo
 
   ngf:
     hidden_dim: 128
@@ -8,15 +8,17 @@ experiment:
     weight_scale: 5.0           # Choose float
     sum_fn: default              # Options: default, bond_weighted
     smooth_fn: tanh              # Options: tanh, relu, identity
-    sparsify_fn: softmax         # Options: softmax, gumbel
-    frozen: true                 # If true, NGF weights are not trained
+    sparsify_fn: gumbel         # Options: softmax, gumbel # add support for controlling function parameters
+    frozen: true                 # If true, NGF weights are not trained - trained variant not implemented yet
+    # Add support for different NGF implementations - e.g pytorch_geometric NGF
 
   ECFP:
     radius: 2
     fingerprint_dim: 2048
-    count_fingerprint: false     # Use binary (False) or count-based (True) ECFP
+    count_fingerprint: false     # Use binary (False) or count-based (True) ECFP - not implemented yet
+    # add support for different implementations of ECFP - e.g Algorithm1 from NGF paper
 
   evaluation:
-    num_pairs: 2000              # Number of random (i, j) pairs for distance comparison
+    num_pairs: 1500              # Number of random (i, j) pairs for distance comparison
     downstream_task: regression  # Options: regression, classification
     model: mlp                 

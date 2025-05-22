@@ -1,0 +1,35 @@
+{
+  "dataset": "lipo",
+  "pearson_r": 0.5723281436383587,
+  "frozen downstream task": {
+    "task": "regression",
+    "ecfp_mean": 0.8504179120063782,
+    "ecfp_std": 0.023604657500982285,
+    "ngf_mean": 0.839250385761261,
+    "ngf_std": 0.02176784723997116
+  },
+  "end to end trained downstream task": {},
+  "config": {
+    "dataset": "lipo",
+    "ngf": {
+      "hidden_dim": 128,
+      "fingerprint_dim": 2048,
+      "num_layers": 2,
+      "weight_scale": 5.0,
+      "sum_fn": "bond_weighted",
+      "smooth_fn": "tanh",
+      "sparsify_fn": "softmax",
+      "frozen": true
+    },
+    "ECFP": {
+      "radius": 2,
+      "fingerprint_dim": 2048,
+      "count_fingerprint": false
+    },
+    "evaluation": {
+      "num_pairs": 1500,
+      "downstream_task": "regression",
+      "model": "mlp"
+    }
+  }
+}

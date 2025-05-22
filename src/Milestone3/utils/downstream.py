@@ -30,7 +30,7 @@ class MLPRegressor(nn.Module):
         x = F.relu(self.fc2(x))
         return self.fc3(x).squeeze(-1)
 
-def run_downstream_task(ecfp_array, ngf_array, labels, task_type, hidden_dim=128, k=10):
+def run_frozen_downstream_task(ecfp_array, ngf_array, labels, task_type, hidden_dim=128, k=10):
     scores_ecfp = []
     scores_ngf = []
 

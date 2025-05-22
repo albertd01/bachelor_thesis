@@ -1,0 +1,35 @@
+{
+  "dataset": "ESOL",
+  "pearson_r": 0.7675012446742286,
+  "frozen downstream task": {
+    "task": "regression",
+    "ecfp_mean": 1.154992938041687,
+    "ecfp_std": 0.10360302776098251,
+    "ngf_mean": 0.9120259284973145,
+    "ngf_std": 0.06227731332182884
+  },
+  "end to end trained downstream task": {},
+  "config": {
+    "dataset": "ESOL",
+    "ngf": {
+      "hidden_dim": 128,
+      "fingerprint_dim": 2048,
+      "num_layers": 2,
+      "weight_scale": 5.0,
+      "sum_fn": "default",
+      "smooth_fn": "tanh",
+      "sparsify_fn": "softmax",
+      "frozen": true
+    },
+    "ECFP": {
+      "radius": 2,
+      "fingerprint_dim": 2048,
+      "count_fingerprint": false
+    },
+    "evaluation": {
+      "num_pairs": 2000,
+      "downstream_task": "regression",
+      "model": "mlp"
+    }
+  }
+}

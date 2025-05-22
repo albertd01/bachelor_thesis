@@ -93,18 +93,6 @@ def compute_ecfp_fp(smiles: str, radius: int, nBits: int, count_fp = False):
 
 
 def compute_ecfp_bit_vectors(smiles_list, radius=2, nBits=2048, count_fp=False):
-    """
-    Compute ECFP bit vectors for a list of SMILES strings.
-
-    Args:
-        smiles_list (List[str]): SMILES strings
-        radius (int): Morgan radius (e.g., 2 for ECFP4)
-        nBits (int): Length of fingerprint vector
-        count_fp (bool): If True, returns count-based fingerprints. If False, binary.
-
-    Returns:
-        np.ndarray: Array of shape [num_molecules, nBits] with ECFP fingerprints
-    """
     mfpgen = rdFingerprintGenerator.GetMorganGenerator(
         radius=radius,
         fpSize=nBits
@@ -116,8 +104,8 @@ def compute_ecfp_bit_vectors(smiles_list, radius=2, nBits=2048, count_fp=False):
         mol = Chem.MolFromSmiles(smi)
         if mol is None:
             raise ValueError(f"Invalid SMILES string: {smi}")
-
-        fp = mfpgen.GetFingerprint(mol)
+        invariants = get_custom_invariants(mol)
+        fp = mfpgen.GetFingerprint(mol, customAtomInvariants=invariants)
         arr = np.zeros((nBits,), dtype=np.int32)
         DataStructs.ConvertToNumpyArray(fp, arr)
         fp_array.append(arr)

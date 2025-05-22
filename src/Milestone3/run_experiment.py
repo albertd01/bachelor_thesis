@@ -5,7 +5,7 @@ from utils.dataset_utils import DuvenaudDataset
 from utils.ecfp_utils import compute_ecfp_bit_vectors
 from models.ngf import NeuralGraphFingerprint
 from utils.evaluation import run_pairwise_analysis, plot_pairwise_distances
-from utils.downstream import run_downstream_task
+from utils.downstream import run_frozen_downstream_task
 import numpy as np
 from torch_geometric.loader import DataLoader
 from utils.logging_utils import create_experiment_dir, save_results, save_distances_csv, save_distance_plot
@@ -75,7 +75,7 @@ def run_experiment(config):
     task_type = config['experiment']['evaluation']['downstream_task']
     dataset_name = config['experiment']['dataset']
 
-    results = run_downstream_task(
+    results_frozen = run_frozen_downstream_task(
         ecfp_array=fps_ecfp,
         ngf_array=emb_mat,
         labels=np.array(labels_np),
@@ -83,8 +83,8 @@ def run_experiment(config):
     )
 
     print(f"\n[Downstream Evaluation] {task_type} on {dataset_name} dataset")
-    print(f"ECFP   → mean: {results['ecfp'][0]:.4f}, std: {results['ecfp'][1]:.4f}")
-    print(f"NGF    → mean: {results['ngf'][0]:.4f}, std: {results['ngf'][1]:.4f}")
+    print(f"ECFP   → mean: {results_frozen['ecfp'][0]:.4f}, std: {results_frozen['ecfp'][1]:.4f}")
+    print(f"NGF    → mean: {results_frozen['ngf'][0]:.4f}, std: {results_frozen['ngf'][1]:.4f}")
     
     # Save results 
     log_dir = create_experiment_dir(config['experiment']['dataset'])
@@ -93,12 +93,14 @@ def run_experiment(config):
     results_to_log = {
         "dataset": config['experiment']['dataset'],
         "pearson_r": r,
-        "downstream": {
+        "frozen downstream task": {
             "task": config['experiment']['evaluation']['downstream_task'],
-            "ecfp_mean": float(results['ecfp'][0]),
-            "ecfp_std": float(results['ecfp'][1]),
-            "ngf_mean": float(results['ngf'][0]),
-            "ngf_std": float(results['ngf'][1])
+            "ecfp_mean": float(results_frozen['ecfp'][0]),
+            "ecfp_std": float(results_frozen['ecfp'][1]),
+            "ngf_mean": float(results_frozen['ngf'][0]),
+            "ngf_std": float(results_frozen['ngf'][1])
+        },
+        "end to end trained downstream task": {
         },
         "config": config['experiment']  
     }

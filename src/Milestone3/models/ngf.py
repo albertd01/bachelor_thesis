@@ -54,7 +54,6 @@ class NeuralGraphFingerprint(nn.Module):
         self.num_layers = num_layers
         self.weight_scale = weight_scale
 
-        # Injected function hooks
         self.sum_fn = SUM_FUNCTIONS[sum_fn] or self.default_sum
         self.smooth_fn = SMOOTH_FUNCTIONS[smooth_fn] or torch.tanh
         self.sparsify_fn = SPARSIFY_FUNCTIONS[sparsify_fn] or (lambda x: F.softmax(x, dim=1))
@@ -80,7 +79,6 @@ class NeuralGraphFingerprint(nn.Module):
             nn.init.normal_(self.W_fp[layer].weight, mean=0.0, std=self.weight_scale)
 
     def default_sum(self, x, edge_index, edge_attr=None):
-        # Standard sum over neighbors
         row, col = edge_index
         neigh_sum = torch.zeros_like(x)
         neigh_sum = neigh_sum.index_add(0, row, x[col])
