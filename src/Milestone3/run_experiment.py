@@ -2,13 +2,16 @@ import yaml
 import torch
 from pathlib import Path
 from utils.dataset_utils import DuvenaudDataset
-from utils.ecfp_utils import compute_ecfp_bit_vectors
-from models.ngf import NeuralGraphFingerprint
+from utils.ecfp_utils import compute_ecfp_bit_vectors, compute_algorithm1_fps, compute_ecfp_count_vectors
+from models.ngf import NeuralGraphFingerprint, NGFWithHead
 from utils.evaluation import run_pairwise_analysis, plot_pairwise_distances
-from utils.downstream import run_frozen_downstream_task
+from utils.frozen_downstream import run_frozen_downstream_task
 import numpy as np
 from torch_geometric.loader import DataLoader
 from utils.logging_utils import create_experiment_dir, save_results, save_distances_csv, save_distance_plot
+from torch_geometric.nn.models import NeuralFingerprint
+from models.ngf_adapter import NGFAdapter
+from utils.end_to_end_downstream import run_end_to_end_training
 
 def load_config(config_path):
     with open(config_path, 'r') as f:
@@ -22,32 +25,57 @@ def run_experiment(config):
     dataset.process()
 
     # Compute ECFP fingerprints
-    fps_ecfp = compute_ecfp_bit_vectors(
-        dataset.smiles_list,
-        radius=config['experiment']['ECFP']['radius'],
-        nBits=config['experiment']['ECFP']['fingerprint_dim'],
-        count_fp=config['experiment']['ECFP']['count_fingerprint']
-    )
+    ecfp_impl = config['experiment']['ecfp']['implementation']
+    radius = config['experiment']['ecfp']['radius']
+    nBits = config['experiment']['ecfp']['fingerprint_dim']
+
+    if ecfp_impl == 'rdkit_binary':
+        fps_ecfp = compute_ecfp_bit_vectors(dataset.smiles_list, radius=radius, nBits=nBits)
+
+    elif ecfp_impl == 'rdkit_count':
+        fps_ecfp = compute_ecfp_count_vectors(dataset.smiles_list, radius=radius, nBits=nBits)
+
+    elif ecfp_impl == 'algorithm1':
+        fps_ecfp = compute_algorithm1_fps(dataset.smiles_list, radius=radius, nBits=nBits)
+
+    else:
+        raise ValueError("Invalid ECFP implementation.")
 
     # Construct NGF model
     example_input = dataset[0]
     in_channels = example_input.x.shape[1]
-    ngf = NeuralGraphFingerprint(
-        in_channels=in_channels,
-        hidden_dim=config['experiment']['ngf']['hidden_dim'],
-        fingerprint_dim=config['experiment']['ngf']['fingerprint_dim'],
-        num_layers=config['experiment']['ngf']['num_layers'],
-        weight_scale=config['experiment']['ngf']['weight_scale'],
-        sum_fn=config['experiment']['ngf']['sum_fn'],
-        smooth_fn=config['experiment']['ngf']['smooth_fn'],
-        sparsify_fn=config['experiment']['ngf']['sparsify_fn']
-    )
+    if config['experiment']['ngf']['implementation'] == 'from_scratch':
+
+        model_core = NeuralGraphFingerprint(
+            in_channels=in_channels,
+            hidden_dim=config['experiment']['ngf']['hidden_dim'],
+            fingerprint_dim=config['experiment']['ngf']['fingerprint_dim'],
+            num_layers=config['experiment']['ngf']['num_layers'],
+            sum_fn=config['experiment']['ngf']['sum_fn'],
+            smooth_fn=config['experiment']['ngf']['smooth_fn'],
+            sparsify_fn=config['experiment']['ngf']['sparsify_fn'],
+        )
+        ngf = NGFAdapter(model_core,mode="custom")
+        
+    elif config['experiment']['ngf']['implementation'] == 'pytorch_geometric':
+
+        model_core = NeuralFingerprint(
+            in_channels=in_channels,
+            hidden_channels=config['experiment']['ngf']['hidden_dim'],
+            out_channels=config['experiment']['ngf']['fingerprint_dim'],
+            num_layers=config['experiment']['ngf']['num_layers']
+        )
+        ngf = NGFAdapter(model_core, mode="pytorch_geometric")
+    else:
+        raise ValueError("Invalid NGF implementation.")
+    
+    
     if config['experiment']['ngf']['frozen']:
-        for p in ngf.parameters():
+        for p in ngf.model.parameters():
             p.requires_grad = False
 
     # Generate NGF embeddings
-    ngf.eval()
+    ngf.model.eval()
     loader = DataLoader(dataset, batch_size=64, shuffle=False)
     emb_list = []
     with torch.no_grad():
@@ -60,15 +88,14 @@ def run_experiment(config):
     print("NGF embeddings shape:", emb_mat.shape)
     
     # Run distance analysis
-    ecfp_dists, ngf_dists, r = run_pairwise_analysis(
-        emb_mat,
-        fps_ecfp,
-        num_pairs=config['experiment']['evaluation']['num_pairs']
+    ecfp_all, ngf_all, ecfp_sample, ngf_sample, r = run_pairwise_analysis(
+        emb_mat, fps_ecfp,
+        sample_size=config['experiment']['evaluation']['num_pairs']
     )
 
     # Plot
-    plot_pairwise_distances(ecfp_dists, ngf_dists, r,
-                            title=f"{config['experiment']['dataset']} ($r={r:.3f}$)")
+    plot_pairwise_distances(ecfp_sample, ngf_sample, r, title=config['experiment']['dataset'])
+    
     # Downstream Evaluation
     labels_np = np.array([data.y.item() for data in dataset])
 
@@ -82,14 +109,25 @@ def run_experiment(config):
         task_type=task_type
     )
 
-    print(f"\n[Downstream Evaluation] {task_type} on {dataset_name} dataset")
+    print(f"\n[Frozen Downstream Evaluation] {task_type} on {dataset_name} dataset")
     print(f"ECFP   → mean: {results_frozen['ecfp'][0]:.4f}, std: {results_frozen['ecfp'][1]:.4f}")
     print(f"NGF    → mean: {results_frozen['ngf'][0]:.4f}, std: {results_frozen['ngf'][1]:.4f}")
     
+    if config['experiment']['evaluation'].get("train_end_to_end", False):    
+        full_model = NGFWithHead(
+            ngf_base=ngf.model,
+            task_type=config['experiment']['evaluation']['downstream_task'],
+            hidden_dim=config['experiment']['ngf']['hidden_dim']  # same as NGF base
+        )
+        print("Running end-to-end training with NGF...")
+        results_trained = run_end_to_end_training(full_model, dataset, task_type)
+        print(f"\n[Frozen Downstream Evaluation] {task_type} on {dataset_name} dataset")
+        print(f"NGF    → mean: {results_trained[0]:.4f}, std: {results_trained[1]:.4f}")
+    
     # Save results 
     log_dir = create_experiment_dir(config['experiment']['dataset'])
-    save_distance_plot(log_dir, ecfp_dists, ngf_dists, r, title=config['experiment']['dataset'])
-    save_distances_csv(log_dir, ecfp_dists, ngf_dists)
+    save_distance_plot(log_dir, ecfp_sample, ngf_sample, r, title=config['experiment']['dataset'])
+    save_distances_csv(log_dir, ecfp_all, ngf_all)
     results_to_log = {
         "dataset": config['experiment']['dataset'],
         "pearson_r": r,

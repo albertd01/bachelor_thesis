@@ -56,12 +56,12 @@ model = NeuralGraphFingerprint(
     weight_scale= 1.0
 )
 
-'''model = NeuralFingerprint(
+model = NeuralFingerprint(
     in_channels=dataset.num_features,
     hidden_channels=128,
     out_channels=2048,
     num_layers=2,
-)'''
+)
 
 for p in model.parameters():
     p.requires_grad = False
@@ -70,8 +70,8 @@ model.eval()
 all_embs = []
 with torch.no_grad():
     for data in loader:
-        emb=model(data)
-        #emb = model(data.x.float(), data.edge_index, data.batch)  
+        #emb=model(data)
+        emb = model(data.x.float(), data.edge_index, data.batch)  
         all_embs.append(emb.cpu())
 emb_mat = torch.cat(all_embs, dim=0).numpy() 
 

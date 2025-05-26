@@ -2,6 +2,10 @@ import torch
 import torch.nn.functional as F
 import torch.nn as nn
 from torch_geometric.nn import global_add_pool
+from sparsemax import Sparsemax
+import numpy as np
+import random
+from models.mlp import MLPClassifier, MLPRegressor
 
 
 # === SUM functions ===
@@ -25,16 +29,31 @@ SUM_FUNCTIONS = {
 }
 
 # === SMOOTH functions ===
+
 SMOOTH_FUNCTIONS = {
     "tanh": torch.tanh,
     "relu": F.relu,
-    "identity": lambda x: x
+    "identity": lambda x: x,
 }
 
 # === SPARSIFY functions ===
+
+def temp_softmax(x, tau=0.00001):
+    return F.softmax(x / tau, dim=1)
+
+def topk_softmax(x, k=1):
+    softmax_vals = F.softmax(x, dim=1)
+    topk_vals, indices = torch.topk(softmax_vals, k=k, dim=1)
+    mask = torch.zeros_like(softmax_vals).scatter_(1, indices, 1.0)
+    return softmax_vals * mask
+
+
 SPARSIFY_FUNCTIONS = {
     "softmax": lambda x: F.softmax(x, dim=1),
-    "gumbel": lambda x: F.gumbel_softmax(x, tau=0.5, hard=False, dim=1)
+    "gumbel": lambda x: F.gumbel_softmax(x, tau=0.5, hard=False, dim=1),
+    "sparsemax": lambda x: Sparsemax(dim=1)(x),
+    "topk_softmax" : topk_softmax,
+    "temp_softmax" : temp_softmax
 }
 
 
@@ -50,13 +69,18 @@ class NeuralGraphFingerprint(nn.Module):
         smooth_fn=None,
         sparsify_fn=None
     ):
+        torch.manual_seed(1337)
+        np.random.seed(1337)
+        random.seed(1337)
         super().__init__()
         self.num_layers = num_layers
         self.weight_scale = weight_scale
+        self.fingerprint_dim = fingerprint_dim
 
         self.sum_fn = SUM_FUNCTIONS[sum_fn] or self.default_sum
         self.smooth_fn = SMOOTH_FUNCTIONS[smooth_fn] or torch.tanh
         self.sparsify_fn = SPARSIFY_FUNCTIONS[sparsify_fn] or (lambda x: F.softmax(x, dim=1))
+        #print(str(self.sparsify_fn))
 
         self.W_self = nn.ModuleList()
         self.W_neigh = nn.ModuleList()
@@ -100,3 +124,22 @@ class NeuralGraphFingerprint(nn.Module):
             fingerprint = fingerprint + fingerprint_layer
 
         return fingerprint
+
+class NGFWithHead(nn.Module):
+    def __init__(self, ngf_base, task_type="regression", hidden_dim=128):
+        super().__init__()
+        self.ngf = ngf_base
+        self.task_type = task_type
+
+        input_dim = getattr(ngf_base, "fingerprint_dim", None) or ngf_base.output_dim
+
+        if task_type == "regression":
+            self.head = MLPRegressor(input_dim=input_dim, hidden_dim=hidden_dim)
+        elif task_type == "classification":
+            self.head = MLPClassifier(input_dim=input_dim, hidden_dim=hidden_dim)
+        else:
+            raise ValueError(f"Unsupported task_type: {task_type}")
+
+    def forward(self, data):
+        x = self.ngf(data)
+        return self.head(x)

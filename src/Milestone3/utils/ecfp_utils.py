@@ -60,8 +60,6 @@ def algorithm1_duvenaud(mol, radius=2, nBits=2048):
     return fp_array
 
 def get_custom_invariants(mol):
-    """Compute a list of integer invariants, one per atom in the molecule,
-    using a tuple of properties. Adjust the tuple to include the properties you need."""
     invariants = []
     for atom in mol.GetAtoms():
         invariants.append(hash_atom_info(atom))
@@ -92,7 +90,7 @@ def compute_ecfp_fp(smiles: str, radius: int, nBits: int, count_fp = False):
     return mfpgen.GetFingerprint(mol)
 
 
-def compute_ecfp_bit_vectors(smiles_list, radius=2, nBits=2048, count_fp=False):
+def compute_ecfp_bit_vectors(smiles_list, radius=2, nBits=2048):
     mfpgen = rdFingerprintGenerator.GetMorganGenerator(
         radius=radius,
         fpSize=nBits
@@ -111,6 +109,37 @@ def compute_ecfp_bit_vectors(smiles_list, radius=2, nBits=2048, count_fp=False):
         fp_array.append(arr)
 
     return np.array(fp_array)
+
+def compute_algorithm1_fps(smiles_list, radius=2, nBits=2048):
+    fps = []
+    for smi in smiles_list:
+        mol = Chem.MolFromSmiles(smi)
+        if mol is None:
+            continue
+        fp = algorithm1_duvenaud(mol, radius=radius, nBits=nBits)
+        fps.append(fp)
+    return np.array(fps)
+
+def compute_ecfp_count_vectors(smiles_list, radius=2, nBits=2048):
+    mfpgen = rdFingerprintGenerator.GetMorganGenerator(
+        radius=radius,
+        fpSize=nBits
+    )
+
+    fp_array = []
+
+    for smi in smiles_list:
+        mol = Chem.MolFromSmiles(smi)
+        if mol is None:
+            raise ValueError(f"Invalid SMILES string: {smi}")
+        invariants = get_custom_invariants(mol)
+        fp = mfpgen.GetCountFingerprint(mol, customAtomInvariants=invariants)
+        arr = np.zeros((nBits,), dtype=np.int32)
+        DataStructs.ConvertToNumpyArray(fp, arr)
+        fp_array.append(arr)
+
+    return np.array(fp_array)
+    
 
 def compute_tanimoto(fp1, fp2):
     intersection = np.sum(np.logical_and(fp1, fp2))

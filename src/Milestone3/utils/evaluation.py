@@ -6,70 +6,67 @@ from rdkit import DataStructs
 
 
 def cont_tanimoto_minmax(x, y):
-    """Continuous generalization of Tanimoto distance using min/max."""
     num = np.sum(np.minimum(x, y))
     denom = np.sum(np.maximum(x, y)) + 1e-8
     return 1.0 - (num / denom)
 
 
-def run_pairwise_analysis(ngf_embeddings, ecfp_fps, num_pairs=1000, seed=42):
+def run_pairwise_analysis(ngf_embeddings, ecfp_fps, sample_size=2000, seed=42):
     """
-    Compute pairwise distances and Pearson correlation between NGF and ECFP.
-    
+    Compute pairwise distances between all pairs of NGF and ECFP representations.
+    Use all distances to compute Pearson r, but only sample a subset for plotting.
+
     Args:
-        ngf_embeddings (np.ndarray): [N, D] array of fingerprint vectors
-        ecfp_fps (list): List of RDKit fingerprint objects (ExplicitBitVect or array-like)
-        num_pairs (int): Number of unique (i, j) pairs to sample
-        seed (int): Random seed
-    
+        ngf_embeddings (np.ndarray): shape [N, D]
+        ecfp_fps (List[ExplicitBitVect]): RDKit bit vectors
+        sample_size (int): number of pairs to sample for plotting
+        seed (int): RNG seed for reproducibility
+
     Returns:
-        ecfp_dists, ngf_dists (np.ndarray), r (float)
+        ecfp_dists_all, ngf_dists_all (np.ndarray): distances over all pairs
+        ecfp_dists_sampled, ngf_dists_sampled (np.ndarray): sampled distances for plotting
+        r (float): Pearson correlation over all pairs
     """
     N = len(ngf_embeddings)
-    rng = np.random.default_rng(seed)
     all_pairs = list(combinations(range(N), 2))
-    sample_idxs = rng.choice(len(all_pairs), size=num_pairs, replace=False)
-    pairs = [all_pairs[i] for i in sample_idxs]
 
-    ecfp_dists = np.array([
-        cont_tanimoto_minmax(
+    # Compute all distances
+    ecfp_dists_all = np.empty(len(all_pairs))
+    ngf_dists_all = np.empty(len(all_pairs))
+
+    for idx, (i, j) in enumerate(all_pairs):
+        ecfp_dists_all[idx] = cont_tanimoto_minmax(
             np.array(ecfp_fps[i], dtype=np.float32),
             np.array(ecfp_fps[j], dtype=np.float32)
         )
-        for i, j in pairs
-    ])
+        ngf_dists_all[idx] = cont_tanimoto_minmax(ngf_embeddings[i], ngf_embeddings[j])
 
-    ngf_dists = np.array([
-        cont_tanimoto_minmax(ngf_embeddings[i], ngf_embeddings[j])
-        for i, j in pairs
-    ])
+    # Compute Pearson r over all pairs
+    r, _ = pearsonr(ecfp_dists_all, ngf_dists_all)
 
-    r, _ = pearsonr(ecfp_dists, ngf_dists)
-    return ecfp_dists, ngf_dists, r
+    # Sample subset for plotting
+    rng = np.random.default_rng(seed)
+    sampled_indices = rng.choice(len(all_pairs), size=min(sample_size, len(all_pairs)), replace=False)
+    ecfp_dists_sampled = ecfp_dists_all[sampled_indices]
+    ngf_dists_sampled = ngf_dists_all[sampled_indices]
+
+    return ecfp_dists_all, ngf_dists_all, ecfp_dists_sampled, ngf_dists_sampled, r
 
 
-def plot_pairwise_distances(ecfp_dists, ngf_dists, r, title='NGF vs ECFP Distances'):
-    """
-    Generate Figure 3-style plot comparing NGF and ECFP distances.
 
-    Args:
-        ecfp_dists (np.ndarray): Distance vector for ECFP pairs
-        ngf_dists (np.ndarray): Distance vector for NGF pairs
-        r (float): Pearson correlation coefficient
-        title (str): Plot title
-    """
+def plot_pairwise_distances(ecfp_sampled, ngf_sampled, r, title='NGF vs ECFP Distances'):
     plt.figure(figsize=(5, 5))
     plt.scatter(
-        ecfp_dists,
-        ngf_dists,
+        ecfp_sampled,
+        ngf_sampled,
         s=20,
         alpha=0.4,
         edgecolors='black',
         linewidths=0.2,
         facecolor='C0'
     )
-    plt.xlabel("Circular fingerprint distances", fontsize=12)
-    plt.ylabel("Neural fingerprint distances", fontsize=12)
+    plt.xlabel("Circular fingerprint distances")
+    plt.ylabel("Neural fingerprint distances")
     plt.xlim(0.5, 1.0)
     plt.ylim(0.5, 1.0)
     plt.grid(True, linestyle=':', linewidth=0.5)
